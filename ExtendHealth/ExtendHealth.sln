@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B9AAF2A8-E4A0-4EEB-B2C5-E7A5F9334BDE}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtendHealth.Modules", "ExtendHealth.Modules\ExtendHealth.Modules.csproj", "{AA928B7A-AB7C-440A-92AB-3A83E60E8384}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtendHealth.Tests", "ExtendHealth.Tests\ExtendHealth.Tests.csproj", "{535C5DDC-ED51-425C-A3A7-CD040EA82247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtendHealth.Web", "ExtendHealth.Web\ExtendHealth.Web.csproj", "{EE725723-C290-420E-A6E0-9EF555C56EE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA928B7A-AB7C-440A-92AB-3A83E60E8384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA928B7A-AB7C-440A-92AB-3A83E60E8384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA928B7A-AB7C-440A-92AB-3A83E60E8384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA928B7A-AB7C-440A-92AB-3A83E60E8384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{535C5DDC-ED51-425C-A3A7-CD040EA82247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535C5DDC-ED51-425C-A3A7-CD040EA82247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535C5DDC-ED51-425C-A3A7-CD040EA82247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535C5DDC-ED51-425C-A3A7-CD040EA82247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE725723-C290-420E-A6E0-9EF555C56EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE725723-C290-420E-A6E0-9EF555C56EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE725723-C290-420E-A6E0-9EF555C56EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE725723-C290-420E-A6E0-9EF555C56EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
