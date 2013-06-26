@@ -27,13 +27,13 @@ namespace ExtendHealth.Tests.UnitTests.Modules
             mock.Setup(x => x.Register<ITestInterface, TestImplementation>(LifeCycle.Transient))
                 .Callback(() =>
             {
-                containerDict.Add(typeof(ITestInterface), new ContainerResult<TestImplementation>(LifeCycle.Transient));
+                containerDict.Add(typeof(ITestInterface), new ContainerResult(typeof(TestImplementation), LifeCycle.Transient));
             });
 
             mock.Setup(x => x.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton))
                 .Callback(() =>
             {
-                containerDict.Add(typeof(ITestSingleton), new ContainerResult<TestSingleton>(LifeCycle.Singleton));
+                containerDict.Add(typeof(ITestSingleton), new ContainerResult(typeof(TestSingleton), LifeCycle.Singleton));
             });
 
             mock.Setup(x => x.Resolve<ITestInterface>())

@@ -7,22 +7,32 @@ using System.Reflection;
 
 namespace ExtendHealth.Modules.IoC
 {
+    public struct ContainerResult : IContainerResult
+    {
+        private LifeCycle _lifeCycle;
+        private Type _resultType;
+
+
+        public LifeCycle LifeCycle { get { return _lifeCycle; } }
+        public Type ResultType { get { return _resultType; } }
+        //public ResultType Instance
+        //{
+        //    get
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        public ContainerResult(Type resultType, LifeCycle lifeCycle)
+        {
+            _lifeCycle = lifeCycle;
+            _resultType = resultType;
+        }
+    }
+
     public interface IContainerResult
     {
         LifeCycle LifeCycle { get; }
         Type ResultType { get; }
-    }
-
-    public struct ContainerResult<T> : IContainerResult
-    {
-        private LifeCycle _lifeCycle;
-
-        public LifeCycle LifeCycle { get { return _lifeCycle; } }
-        public Type ResultType { get { return typeof(T); } }
-
-        public ContainerResult(LifeCycle lifeCycle)
-        {
-            _lifeCycle = lifeCycle;
-        }
     }
 }
