@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using System.Reflection;
 using NUnit.Framework;
 
 using ExtendHealth.Modules.IoC;
@@ -13,7 +14,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
     [TestFixture]
     public class IoCContainerTests
     {
-        private Dictionary<Type, Type> containerDict = new Dictionary<Type, Type>();
+        private Dictionary<Type, ContainerResult> containerDict = new Dictionary<Type, ContainerResult>();
         private IInjectionContainer injectionContainer;
 
         #region SetUp / TearDown
@@ -22,11 +23,21 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         public void Init()
         {
             var mock = new Mock<IInjectionContainer>();
-            mock.Setup(x => x.Register<ITestInterface, TestImplementation>(It.IsAny<LifeCycle>())).Callback(() =>
+
+            mock.Setup(x => x.Register<ITestInterface, TestImplementation>(LifeCycle.Transient))
+                .Callback(() =>
             {
-                containerDict.Add(typeof(ITestInterface), typeof(TestImplementation));
+                containerDict.Add(typeof(ITestInterface), new ContainerResult(typeof(TestImplementation), LifeCycle.Transient));
             });
-            mock.Setup(x => x.Resolve<ITestInterface>()).Returns(() =>
+
+            mock.Setup(x => x.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton))
+                .Callback(() =>
+            {
+                containerDict.Add(typeof(ITestSingleton), new ContainerResult(typeof(TestSingleton), LifeCycle.Singleton));
+            });
+
+            mock.Setup(x => x.Resolve<ITestInterface>())
+                .Returns(() =>
             {
                 throw new NotImplementedException();
             });
@@ -37,7 +48,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         [TearDown]
         public void Dispose()
         {
-
+            containerDict.Clear();
         }
 
         #endregion
@@ -48,11 +59,28 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         public void IoC_Register_AddedToContainer()
         {
             injectionContainer.Register<ITestInterface, TestImplementation>();
-            Assert.AreEqual(containerDict[typeof(ITestInterface)], typeof(TestImplementation));
+            var containerResult = containerDict[typeof(ITestInterface)];
+
+            Assert.AreEqual(containerResult.ResultType, typeof(TestImplementation), "Incorrect type has been registered in the container");
         }
 
         [Test]
-        public void IoC_Resolve_SuccessfulResolve()
+        public void IoC_Register_IsLifeCycleAware()
+        {
+            injectionContainer.Register<ITestInterface, TestImplementation>();
+            injectionContainer.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton);
+
+            var testImpContainerResult = containerDict[typeof(ITestInterface)];
+            var testSglContainerResult = containerDict[typeof(ITestSingleton)];
+
+            Assert.AreEqual(testImpContainerResult.ResultType, typeof(TestImplementation), "Incorrect type has been registered in the container");
+            Assert.AreEqual(testImpContainerResult.LifeCycle, LifeCycle.Transient, "Incorrect life cycle type has been registered");
+            Assert.AreEqual(testSglContainerResult.ResultType, typeof(TestSingleton), "Incorrect type has been registered in the container");
+            Assert.AreEqual(testSglContainerResult.LifeCycle, LifeCycle.Singleton, "Incorrect life cycle type has been registered");
+        }
+
+        [Test]
+        public void IoC_Resolve_SuccessfulSingleTypeResolve()
         {
             var dependency = injectionContainer.Resolve<ITestInterface>();
         }
@@ -71,4 +99,6 @@ namespace ExtendHealth.Tests.UnitTests.Modules
     interface ITestSingleton { }
 
     class TestSingleton : ITestSingleton { }
+
+    interface INotExists { }
 }

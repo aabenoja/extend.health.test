@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IoC\ContainerResult.cs" />
     <Compile Include="IoC\InjectionContainer.cs" />
     <Compile Include="IoC\IInjectionContainer.cs" />
     <Compile Include="IoC\LifeCycle.cs" />
