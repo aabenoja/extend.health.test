@@ -14,7 +14,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
     [TestFixture]
     public class IoCContainerTests
     {
-        private Dictionary<Type, ContainerResult> containerDict = new Dictionary<Type, ContainerResult>();
+        private Dictionary<Type, IContainerResult> containerDict = new Dictionary<Type, IContainerResult>();
         private IInjectionContainer injectionContainer;
 
         #region SetUp / TearDown
@@ -27,18 +27,19 @@ namespace ExtendHealth.Tests.UnitTests.Modules
             mock.Setup(x => x.Register<ITestInterface, TestImplementation>(LifeCycle.Transient))
                 .Callback(() =>
             {
-                containerDict.Add(typeof(ITestInterface), new ContainerResult(typeof(TestImplementation), LifeCycle.Transient));
+                containerDict.Add(typeof(ITestInterface), new ContainerResult<TestImplementation>(LifeCycle.Transient));
             });
 
             mock.Setup(x => x.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton))
                 .Callback(() =>
             {
-                containerDict.Add(typeof(ITestSingleton), new ContainerResult(typeof(TestSingleton), LifeCycle.Singleton));
+                containerDict.Add(typeof(ITestSingleton), new ContainerResult<TestSingleton>(LifeCycle.Singleton));
             });
 
             mock.Setup(x => x.Resolve<ITestInterface>())
                 .Returns(() =>
             {
+                var containerResult = containerDict[typeof(ITestInterface)];
                 throw new NotImplementedException();
             });
 

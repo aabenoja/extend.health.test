@@ -15,15 +15,15 @@ namespace ExtendHealth.Modules.IoC
             containerDict = new Dictionary<Type, Type>();
         }
 
-        public void Register<TAbstract, TConcrete>(LifeCycle cycleType = LifeCycle.Transient)
-        {
-            containerDict.Add(typeof(TAbstract), typeof(TConcrete));
-        }
-
         public TAbstract Resolve<TAbstract>()
         {
             Type requestedType = containerDict[typeof(TAbstract)];
             throw new NotImplementedException();
+        }
+
+        public void Register<TAbstract, TConcrete>(LifeCycle cycleType = LifeCycle.Transient) where TConcrete : TAbstract
+        {
+            containerDict.Add(typeof(TAbstract), typeof(TConcrete));
         }
     }
 }

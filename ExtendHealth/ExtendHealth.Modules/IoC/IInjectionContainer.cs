@@ -8,7 +8,7 @@ namespace ExtendHealth.Modules.IoC
 {
     public interface IInjectionContainer
     {
-        void Register<TAbstract, TConcrete>(LifeCycle cycleType = LifeCycle.Transient);
+        void Register<TAbstract, TConcrete>(LifeCycle cycleType = LifeCycle.Transient) where TConcrete: TAbstract;
         T Resolve<T>();
     }
 }
