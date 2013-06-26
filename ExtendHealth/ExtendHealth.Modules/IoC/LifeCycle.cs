@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtendHealth.Modules
+namespace ExtendHealth.Modules.IoC
 {
-    public class Class1
+    public enum LifeCycle
     {
+        Transient,
+        Singleton
     }
 }
