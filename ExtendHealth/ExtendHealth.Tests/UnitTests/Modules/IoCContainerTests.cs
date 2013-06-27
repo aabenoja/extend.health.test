@@ -14,7 +14,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
     [TestFixture]
     public class IoCContainerTests
     {
-        private Dictionary<Type, IContainerResult> containerDict = new Dictionary<Type, IContainerResult>();
+        private Dictionary<Type, IContainerResult> containerDict;// = new Dictionary<Type, IContainerResult>();
         private IInjectionContainer injectionContainer;
 
         #region SetUp / TearDown
@@ -22,13 +22,14 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         [SetUp]
         public void Init()
         {
-            injectionContainer = CreateMoqContainer();
+            //injectionContainer = CreateMoqContainer();
+            injectionContainer = new InjectionContainer();
         }
 
         [TearDown]
         public void Dispose()
         {
-            containerDict.Clear();
+            //containerDict.Clear();
         }
 
         #endregion
@@ -39,9 +40,11 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         public void IoC_Register_AddedToContainer()
         {
             injectionContainer.Register<ITestInterface, TestSimpleImplementation>();
-            var containerResult = containerDict[typeof(ITestInterface)];
+            //var containerResult = containerDict[typeof(ITestInterface)];
+            var resolvedObjected = injectionContainer.Resolve<ITestInterface>();
 
-            Assert.AreEqual(containerResult.ResultType, typeof(TestSimpleImplementation), "Incorrect type has been registered in the container");
+            //Assert.AreEqual(typeof(TestSimpleImplementation), containerResult.ResultType, "Incorrect type has been registered in the container");
+            Assert.IsInstanceOf(typeof(TestSimpleImplementation), resolvedObjected, "Incorrect type has been registered in the container");
         }
 
         [Test]
@@ -50,13 +53,20 @@ namespace ExtendHealth.Tests.UnitTests.Modules
             injectionContainer.Register<ITestInterface, TestSimpleImplementation>();
             injectionContainer.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton);
 
-            var testImpContainerResult = containerDict[typeof(ITestInterface)];
-            var testSglContainerResult = containerDict[typeof(ITestSingleton)];
+            var testImpContainerResult_1 = injectionContainer.Resolve<ITestInterface>();// containerDict[typeof(ITestInterface)];
+            var testImpContainerResult_2 = injectionContainer.Resolve<ITestInterface>();
+            var testSglContainerResult_1 = injectionContainer.Resolve<ITestSingleton>();// containerDict[typeof(ITestSingleton)];
+            var testSglContainerResult_2 = injectionContainer.Resolve<ITestSingleton>();// containerDict[typeof(ITestSingleton)];
 
-            Assert.AreEqual(testImpContainerResult.ResultType, typeof(TestSimpleImplementation), "Incorrect type has been registered in the container");
-            Assert.AreEqual(testImpContainerResult.LifeCycle, LifeCycle.Transient, "Incorrect life cycle type has been registered");
-            Assert.AreEqual(testSglContainerResult.ResultType, typeof(TestSingleton), "Incorrect type has been registered in the container");
-            Assert.AreEqual(testSglContainerResult.LifeCycle, LifeCycle.Singleton, "Incorrect life cycle type has been registered");
+            //Assert.AreEqual(testImpContainerResult_1.ResultType, typeof(TestSimpleImplementation), "Incorrect type has been registered in the container");
+            //Assert.AreEqual(testImpContainerResult_1.LifeCycle, LifeCycle.Transient, "Incorrect life cycle type has been registered");
+            //Assert.AreEqual(testSglContainerResult_1.ResultType, typeof(TestSingleton), "Incorrect type has been registered in the container");
+            //Assert.AreSame(testSglContainerResult_1, testSglContainerResult_2, "Container has returned two separate instances of a singleton");
+
+            Assert.IsInstanceOf(typeof(ITestInterface), testImpContainerResult_1, "Resolved object not of the expected type (ITestInterface)");
+            Assert.AreNotSame(testImpContainerResult_2, testImpContainerResult_1, "Container has returned the same instance of the expected type (ITestInterface)");
+            Assert.IsInstanceOf(typeof(ITestSingleton), testSglContainerResult_1, "Resolved object not of the expected type (ITestSingleton)");
+            Assert.AreSame(testSglContainerResult_2, testSglContainerResult_1, "Container has returned two separate instances of the expected type (ITestSingleton)");
         }
 
         [Test]
@@ -71,11 +81,15 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         public void IoC_Resolve_SuccessfulSingletonResolved()
         {
             injectionContainer.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton);
-            var dependency = injectionContainer.Resolve<ITestSingleton>();
-            var containerResult = containerDict[typeof(ITestSingleton)];
+            var dependency_1 = injectionContainer.Resolve<ITestSingleton>();
+            var dependency_2 = injectionContainer.Resolve<ITestSingleton>();
+            //var containerResult = containerDict[typeof(ITestSingleton)];
 
-            Assert.AreEqual(dependency.GetType(), typeof(TestSingleton), "The resolved type does not match the desired type");
-            Assert.NotNull(containerResult.Instance, "The container failed to save an instance of a singleton");
+            //Assert.AreEqual(dependency.GetType(), typeof(TestSingleton), "The resolved type does not match the desired type");
+            //Assert.NotNull(containerResult.Instance, "The container failed to save an instance of a singleton");
+
+            Assert.IsInstanceOf(typeof(ITestSingleton), dependency_1, "The resolved type does not match the desired type");
+            Assert.AreSame(dependency_1, dependency_2, "Container has resolved to generate two separate instances of a singleton");
         }
 
         [Test]
@@ -157,10 +171,8 @@ namespace ExtendHealth.Tests.UnitTests.Modules
                 .Returns(() =>
                 {
                     var containerResult = containerDict[typeof(ComplexType)];
-                    var constructors = containerResult.ResultType.GetConstructors();
-                    var constructor = constructors.FirstOrDefault();
-                    var allParams = constructor.GetParameters();
-                    var paramTypes = allParams.ToList().Select(x => x.ParameterType).ToArray();
+                    var constructor = containerResult.ResultType.GetConstructors().FirstOrDefault();
+                    var paramTypes = constructor.GetParameters().Select(x => x.ParameterType);
                     var resolveInfo = injectionContainer.GetType().GetMethod("Resolve");
                     var resolvedParams = paramTypes.Select(x => resolveInfo.MakeGenericMethod(x).Invoke(injectionContainer, null)).ToArray();
                     return (ComplexType)constructor.Invoke(resolvedParams);
@@ -171,6 +183,8 @@ namespace ExtendHealth.Tests.UnitTests.Modules
 
         #endregion
     }
+
+    #region test types
 
     interface ITestInterface
     {
@@ -197,4 +211,6 @@ namespace ExtendHealth.Tests.UnitTests.Modules
             PublicDependencyB = depenB;
         }
     }
+
+    #endregion
 }
