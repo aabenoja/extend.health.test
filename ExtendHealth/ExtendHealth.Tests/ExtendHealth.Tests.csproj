@@ -57,6 +57,10 @@
       <Project>{aa928b7a-ab7c-440a-92ab-3a83e60e8384}</Project>
       <Name>ExtendHealth.Modules</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ExtendHealth.Web\ExtendHealth.Web.csproj">
+      <Project>{ee725723-c290-420e-a6e0-9ef555c56ee4}</Project>
+      <Name>ExtendHealth.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

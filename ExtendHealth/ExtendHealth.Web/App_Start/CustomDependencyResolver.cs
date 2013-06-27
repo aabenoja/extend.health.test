@@ -3,15 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 
 namespace ExtendHealth.Web
 {
-    public class MyDependencyResolver : IDependencyResolver
+    public class CustomDependencyResolver : System.Web.Mvc.IDependencyResolver
     {
         private IInjectionContainer container;
 
-        public MyDependencyResolver(IInjectionContainer container)
+        public CustomDependencyResolver(IInjectionContainer container)
         {
             this.container = container;
         }

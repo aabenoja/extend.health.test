@@ -9,21 +9,31 @@ namespace ExtendHealth.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private IUsersRepo repo;
+        
+        private IUsersRepo usersRepo;
+        private IContactsRepo contactsRepo;
 
-        public HomeController()
+        public HomeController(IUsersRepo usersRepo, IContactsRepo contactsRepo)
         {
-            //this.repo = repo;
+            this.usersRepo = usersRepo;
+            this.contactsRepo = contactsRepo;
         }
 
         public ActionResult Index()
         {
-            return View(/*new
+            return View(new
             {
-                TotalOnline = repo.UsersOnline,
-                UserList = repo.Usernames
-            }*/);
+                TotalOnline = usersRepo.UsersOnline,
+                UserList = usersRepo.Usernames
+            });
         }
 
+        public ActionResult Contacts()
+        {
+            return View(new
+            {
+                Contacts = contactsRepo.GetAllNames
+            });
+        }
     }
 }
