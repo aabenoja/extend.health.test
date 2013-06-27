@@ -17,7 +17,7 @@ namespace ExtendHealth.Web.Repositories.Concrete
             }
         }
 
-        public IEnumerable<string> Usernames
+        public IEnumerable<string> Admins
         {
             get 
             {

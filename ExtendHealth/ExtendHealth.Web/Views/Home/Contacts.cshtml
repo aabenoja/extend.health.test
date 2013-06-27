@@ -1,8 +1,16 @@
-﻿@model dynamic
+﻿@model ExtendHealth.Web.Models.Home.ContactsViewModel
 
 @{
     ViewBag.Title = "Contacts";
 }
 
-<h2>Contacts</h2>
+<p>@Html.ActionLink("Users", "Index")</p>
 
+<h1>Contacts</h1>
+
+<div>
+    @foreach (var contact in Model.Contacts)
+    {
+        <p>@contact</p>
+    }
+</div>

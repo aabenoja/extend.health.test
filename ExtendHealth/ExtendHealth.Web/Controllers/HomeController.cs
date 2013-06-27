@@ -1,4 +1,5 @@
-﻿using ExtendHealth.Web.Repositories;
+﻿using ExtendHealth.Web.Models.Home;
+using ExtendHealth.Web.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,16 +22,16 @@ namespace ExtendHealth.Web.Controllers
 
         public ActionResult Index()
         {
-            return View(new
+            return View(new IndexViewModel
             {
                 TotalOnline = usersRepo.UsersOnline,
-                UserList = usersRepo.Usernames
+                Admins = usersRepo.Admins
             });
         }
 
         public ActionResult Contacts()
         {
-            return View(new
+            return View(new ContactsViewModel
             {
                 Contacts = contactsRepo.GetAllNames
             });

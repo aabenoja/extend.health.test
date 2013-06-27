@@ -9,6 +9,6 @@ namespace ExtendHealth.Web.Repositories
     public interface IUsersRepo
     {
         int UsersOnline { get; }
-        IEnumerable<string> Usernames { get; }
+        IEnumerable<string> Admins { get; }
     }
 }
