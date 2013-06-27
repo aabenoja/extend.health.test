@@ -41,8 +41,8 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         {
             injectionContainer.Register<ITestInterface, TestSimpleImplementation>();
             //var containerResult = containerDict[typeof(ITestInterface)];
-            var resolvedObjected = injectionContainer.Resolve<ITestInterface>();
-
+            var resolvedObjected = injectionContainer.Resolve(typeof(ITestInterface));
+            
             //Assert.AreEqual(typeof(TestSimpleImplementation), containerResult.ResultType, "Incorrect type has been registered in the container");
             Assert.IsInstanceOf(typeof(TestSimpleImplementation), resolvedObjected, "Incorrect type has been registered in the container");
         }
@@ -53,10 +53,10 @@ namespace ExtendHealth.Tests.UnitTests.Modules
             injectionContainer.Register<ITestInterface, TestSimpleImplementation>();
             injectionContainer.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton);
 
-            var testImpContainerResult_1 = injectionContainer.Resolve<ITestInterface>();// containerDict[typeof(ITestInterface)];
-            var testImpContainerResult_2 = injectionContainer.Resolve<ITestInterface>();
-            var testSglContainerResult_1 = injectionContainer.Resolve<ITestSingleton>();// containerDict[typeof(ITestSingleton)];
-            var testSglContainerResult_2 = injectionContainer.Resolve<ITestSingleton>();// containerDict[typeof(ITestSingleton)];
+            var testImpContainerResult_1 = injectionContainer.Resolve(typeof(ITestInterface));// containerDict[typeof(ITestInterface)];
+            var testImpContainerResult_2 = injectionContainer.Resolve(typeof(ITestInterface));
+            var testSglContainerResult_1 = injectionContainer.Resolve(typeof(ITestSingleton));// containerDict[typeof(ITestSingleton)];
+            var testSglContainerResult_2 = injectionContainer.Resolve(typeof(ITestSingleton));// containerDict[typeof(ITestSingleton)];
 
             //Assert.AreEqual(testImpContainerResult_1.ResultType, typeof(TestSimpleImplementation), "Incorrect type has been registered in the container");
             //Assert.AreEqual(testImpContainerResult_1.LifeCycle, LifeCycle.Transient, "Incorrect life cycle type has been registered");
@@ -73,7 +73,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         public void IoC_Resolve_SuccessfulSingleTypeResolve()
         {
             injectionContainer.Register<ITestInterface, TestSimpleImplementation>();
-            var dependency = injectionContainer.Resolve<ITestInterface>();
+            var dependency = injectionContainer.Resolve(typeof(ITestInterface));
             Assert.AreEqual(dependency.GetType(), typeof(TestSimpleImplementation), "The resolved type does not match the desired type");
         }
 
@@ -81,8 +81,8 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         public void IoC_Resolve_SuccessfulSingletonResolved()
         {
             injectionContainer.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton);
-            var dependency_1 = injectionContainer.Resolve<ITestSingleton>();
-            var dependency_2 = injectionContainer.Resolve<ITestSingleton>();
+            var dependency_1 = injectionContainer.Resolve(typeof(ITestSingleton));
+            var dependency_2 = injectionContainer.Resolve(typeof(ITestSingleton));
             //var containerResult = containerDict[typeof(ITestSingleton)];
 
             //Assert.AreEqual(dependency.GetType(), typeof(TestSingleton), "The resolved type does not match the desired type");
@@ -95,8 +95,8 @@ namespace ExtendHealth.Tests.UnitTests.Modules
         [Test]
         public void IoC_Resolve_ErrorOnUnregisteredType()
         {
-            Assert.Throws(typeof(UnregisteredTypeException), 
-                new TestDelegate(() => { injectionContainer.Resolve<ITestInterface>(); }), 
+            Assert.Throws(typeof(UnregisteredTypeException),
+                new TestDelegate(() => { injectionContainer.Resolve(typeof(ITestInterface)); }), 
                 "The requested type has been registered within the container");
         }
 
@@ -106,7 +106,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
             injectionContainer.Register<ITestInterface, TestSimpleImplementation>();
             injectionContainer.Register<ITestSingleton, TestSingleton>(LifeCycle.Singleton);
             injectionContainer.Register<ComplexType, ComplexType>();
-            var dependency = injectionContainer.Resolve<ComplexType>();
+            var dependency = (ComplexType)injectionContainer.Resolve(typeof(ComplexType));
 
             Assert.IsInstanceOf(typeof(ITestInterface), dependency.PublicDependencyA, "Complex type does not have an ITestInterface dependency");
             Assert.IsInstanceOf(typeof(ITestSingleton), dependency.PublicDependencyB, "Complex type does not have an ITestSingleton dependency");
@@ -138,7 +138,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
                     containerDict.Add(typeof(ComplexType), new ContainerResult(typeof(ComplexType), LifeCycle.Transient));
                 });
 
-            mock.Setup(x => x.Resolve<ITestInterface>())
+            mock.Setup(x => x.Resolve(typeof(ITestInterface)))
                 .Returns(() =>
             {
                 try
@@ -154,7 +154,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
                 }
             });
 
-            mock.Setup(x => x.Resolve<ITestSingleton>())
+            mock.Setup(x => x.Resolve(typeof(ITestInterface)))
                 .Returns(() =>
                 {
                     var containerResult = containerDict[typeof(ITestSingleton)];
@@ -167,7 +167,7 @@ namespace ExtendHealth.Tests.UnitTests.Modules
                     return (ITestSingleton)containerResult.Instance;
                 });
 
-            mock.Setup(x => x.Resolve<ComplexType>())
+            mock.Setup(x => x.Resolve(typeof(ITestInterface)))
                 .Returns(() =>
                 {
                     var containerResult = containerDict[typeof(ComplexType)];

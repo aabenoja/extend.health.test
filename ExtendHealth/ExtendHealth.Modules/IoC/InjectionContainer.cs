@@ -15,11 +15,11 @@ namespace ExtendHealth.Modules.IoC
             containerDict = new Dictionary<Type, IContainerResult>();
         }
 
-        public TAbstract Resolve<TAbstract>()
+        public object Resolve(Type type)
         {
             try
             {
-                var containerResult = containerDict[typeof(TAbstract)];
+                var containerResult = containerDict[type];
                 object output = containerResult.Instance;
 
                 if (output == null)
@@ -27,13 +27,14 @@ namespace ExtendHealth.Modules.IoC
                     var constructor = containerResult.ResultType.GetConstructors().FirstOrDefault();
                     var paramTypes = constructor.GetParameters().Select(x => x.ParameterType);
                     var resolveInfo = this.GetType().GetMethod("Resolve");
-                    var resolvedParams = paramTypes.Select(x => resolveInfo.MakeGenericMethod(x).Invoke(this, null)).ToArray();
+                    var resolvedParams = paramTypes.Select(x => resolveInfo.Invoke(this, new object[]{x})).ToArray();
                     output = constructor.Invoke(resolvedParams);
 
                     if (containerResult.LifeCycle == LifeCycle.Singleton)
                         containerResult.Instance = output;
                 }
-                return (TAbstract)output;
+
+                return output;
             }
             catch (KeyNotFoundException)
             {
