@@ -43,6 +43,7 @@
     <Compile Include="IoC\InjectionContainer.cs" />
     <Compile Include="IoC\IInjectionContainer.cs" />
     <Compile Include="IoC\LifeCycle.cs" />
+    <Compile Include="IoC\UnregisteredTypeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

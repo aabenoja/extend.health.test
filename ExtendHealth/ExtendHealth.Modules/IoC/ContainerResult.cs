@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace ExtendHealth.Modules.IoC
 {
-    public struct ContainerResult : IContainerResult
+    public class ContainerResult : IContainerResult
     {
         private LifeCycle _lifeCycle;
         private Type _resultType;
@@ -15,18 +15,13 @@ namespace ExtendHealth.Modules.IoC
 
         public LifeCycle LifeCycle { get { return _lifeCycle; } }
         public Type ResultType { get { return _resultType; } }
-        //public ResultType Instance
-        //{
-        //    get
-        //    {
-        //        return null;
-        //    }
-        //}
+        public object Instance { get; set; }                        //should only be used for singleton objects
 
         public ContainerResult(Type resultType, LifeCycle lifeCycle)
         {
             _lifeCycle = lifeCycle;
             _resultType = resultType;
+            Instance = null;
         }
     }
 
@@ -34,5 +29,6 @@ namespace ExtendHealth.Modules.IoC
     {
         LifeCycle LifeCycle { get; }
         Type ResultType { get; }
+        object Instance { get; set; }
     }
 }
