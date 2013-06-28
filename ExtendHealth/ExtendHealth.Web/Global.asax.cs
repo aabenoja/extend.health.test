@@ -23,20 +23,7 @@ namespace ExtendHealth.Web
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            //DependencyInjectorConfig.RegisterTypes(GlobalConfiguration.Configuration);
-            DependencyResolver.SetResolver(new CustomDependencyResolver(CreateContainer()));
-        }
-
-        private IInjectionContainer CreateContainer()
-        {
-            IInjectionContainer container = new InjectionContainer();
-
-            container.Register<IUsersRepo, MockUsersRepo>(LifeCycle.Singleton);
-            container.Register<IContactsRepo, MockContactsRepo>();
-
-            container.Register<HomeController, HomeController>();
-
-            return container;
+            DependencyInjectorConfig.RegisterTypes();
         }
     }
 
