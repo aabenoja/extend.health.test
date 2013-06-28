@@ -8,7 +8,7 @@ namespace ExtendHealth.Modules.IoC
 {
     public class InjectionContainer : IInjectionContainer
     {
-        private Dictionary<Type, IContainerResult> containerDict;
+        internal Dictionary<Type, IContainerResult> containerDict;
 
         public InjectionContainer()
         {

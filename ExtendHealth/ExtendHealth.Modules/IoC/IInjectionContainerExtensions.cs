@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace ExtendHealth.Modules.IoC
 {
-    public class IInjectionContainerExtensions
+    public static class IInjectionContainerExtensions
     {
         public static T Resolve<T>(this IInjectionContainer container)
         {
             return (T) container.Resolve(typeof(T));
+        }
+
+        public static void ClearContainer(this InjectionContainer container)
+        {
+            container.containerDict.Clear();
         }
     }
 }
