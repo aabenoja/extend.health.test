@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExtendHealth.Modules.IoC
 {
-    public static class IInjectionContainerExtensions
+    public static class InjectionContainerExtensions
     {
         public static T Resolve<T>(this IInjectionContainer container)
         {
