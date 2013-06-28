@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IoC\ContainerResult.cs" />
+    <Compile Include="IoC\IContainerResult.cs" />
+    <Compile Include="IoC\IInjectionContainerExtensions.cs" />
     <Compile Include="IoC\InjectionContainer.cs" />
     <Compile Include="IoC\IInjectionContainer.cs" />
     <Compile Include="IoC\LifeCycle.cs" />

@@ -24,11 +24,4 @@ namespace ExtendHealth.Modules.IoC
             Instance = null;
         }
     }
-
-    public interface IContainerResult
-    {
-        LifeCycle LifeCycle { get; }
-        Type ResultType { get; }
-        object Instance { get; set; }
-    }
 }
