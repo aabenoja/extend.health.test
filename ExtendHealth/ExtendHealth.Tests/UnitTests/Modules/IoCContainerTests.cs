@@ -41,9 +41,6 @@ namespace ExtendHealth.Tests.UnitTests.Modules
 
         #region Tests
 
-        /// <summary>
-        /// 
-        /// </summary>
         [Test]
         public void IoC_Register_AddedToContainer()
         {
